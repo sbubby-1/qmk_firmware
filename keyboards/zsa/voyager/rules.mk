@@ -8,3 +8,10 @@ DFU_SUFFIX_ARGS = -v 3297 -p 0791
 VPATH += drivers/gpio
 SRC += matrix.c mcp23018.c
 I2C_DRIVER_REQUIRED = yes
+
+RGBLIGHT_ENABLE = no
+DEFERRED_EXEC_ENABLE = yes
+SRC += features/achordion.c
+MOUSEKEY_ENABLE = yes
+COMBOS_ENABLE = yes
+REPEAT_KEY_ENABLE = yes

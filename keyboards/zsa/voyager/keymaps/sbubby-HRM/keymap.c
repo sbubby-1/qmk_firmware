@@ -99,9 +99,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 };
 
-
-
-
 void housekeeping_task_user(void) {
     achordion_task();
 }
@@ -202,9 +199,9 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t* record) {
   switch (keycode) {
     case HOME_N:
     case HOME_E:
-      return QUICK_TAP_TERM;  // Enable key repeating.
+    case HYPR_SPC:
+      return QUICK_TAP_TERM;
     default:
-      return 0;  // Otherwise, force hold and disable key repeating.
+      return 0;
   }
 }
-

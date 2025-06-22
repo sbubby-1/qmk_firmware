@@ -4,6 +4,7 @@
 
 #include QMK_KEYBOARD_H
 #include "features/achordion.h"
+#include "timer.h"
 
 enum layers { BASE, SYM, NAV, NUM, MOUSE };
 
@@ -17,6 +18,9 @@ enum custom_keycodes {
     RIGHT_WORD,
     CLOSE_PAIR
 };
+
+#define CUSTOM_KEY_DELAY 200
+#define CUSTOM_KEY_INTERVAL 50
 
 // Left-hand home row mods
 #define HOME_N LCTL_T(KC_N)
@@ -50,6 +54,11 @@ enum custom_keycodes {
 #define ZOOM_OUT G(KC_MINS)
 
 #define HYPR_SPC MT(MOD_LCTL | MOD_LSFT | MOD_LALT | MOD_LGUI,KC_SPC)
+
+bool is_custom_key_held = false;
+bool did_custom_key_repeat = false;
+uint16_t held_custom_key = 0;
+uint16_t custom_key_held_timer = 0;
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     return update_tri_layer_state(state, SYM, NAV, NUM);
@@ -120,10 +129,53 @@ bool handle_closing_pair(void) {
     return true;
 }
 
+void tap_custom_key(void) {
+    switch (held_custom_key) {
+        case LEFT_WORD:
+            register_mods(MOD_BIT(KC_LSFT) | MOD_BIT(KC_LALT));
+            tap_code(KC_LEFT);
+            unregister_mods(MOD_BIT(KC_LSFT) | MOD_BIT(KC_LALT));
+            break;
+
+        case RIGHT_WORD:
+            register_mods(MOD_BIT(KC_LSFT) | MOD_BIT(KC_LALT));
+            tap_code(KC_RGHT);
+            unregister_mods(MOD_BIT(KC_LSFT) | MOD_BIT(KC_LALT));
+            break;
+
+        case DELETE_LINE:
+            SEND_STRING(SS_LGUI(SS_TAP(X_RGHT)));
+            SEND_STRING(SS_LGUI(SS_TAP(X_BSPC)));
+            break;
+    }
+}
+
+bool set_repeat_custom_key(uint16_t keycode, keyrecord_t *record) {
+    if (keycode != LEFT_WORD && keycode != RIGHT_WORD && keycode != DELETE_LINE) return true;
+
+    held_custom_key = keycode;
+
+    if (record->event.pressed) {
+        is_custom_key_held = true;
+        custom_key_held_timer = timer_read();
+    } else {
+        is_custom_key_held = false;
+
+        if (!did_custom_key_repeat) tap_custom_key();
+
+        did_custom_key_repeat = false;
+    }
+
+    return false;
+}
+
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_achordion(keycode, record)) {
         return false;
     }
+
+    if (!set_repeat_custom_key(keycode, record)) return false;
 
     if (record->event.pressed) {
         switch (keycode) {
@@ -159,23 +211,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
                 SEND_STRING("viwpyiw");
                 return false;
 
-            case DELETE_LINE:
-                SEND_STRING(SS_LGUI(SS_TAP(X_RGHT)));
-                SEND_STRING(SS_LGUI(SS_TAP(X_BSPC)));
-                return false;
-
-            case LEFT_WORD:
-                register_code(KC_LSFT);
-                tap_code16(LALT(KC_LEFT));
-                unregister_code(KC_LSFT); 
-                return false;
-
-            case RIGHT_WORD:
-                register_code(KC_LSFT);
-                tap_code16(LALT(KC_RGHT));
-                unregister_code(KC_LSFT); 
-                return false;
-
             case KC_LPRN: case KC_LBRC: case KC_LCBR: case KC_LABK: case KC_QUOT: case KC_DQUO: case KC_GRV:
                 handle_opening_pair(keycode);
                 return false;
@@ -200,4 +235,18 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t* record) {
     default:
       return 0;
   }
+}
+
+void matrix_scan_user(void) {
+    static uint16_t last_repeat = 0;
+
+    if (is_custom_key_held) {
+        uint16_t elapsed = timer_elapsed(custom_key_held_timer);
+
+        if (elapsed > CUSTOM_KEY_DELAY && timer_elapsed(last_repeat) > CUSTOM_KEY_INTERVAL) {
+            tap_custom_key();
+            did_custom_key_repeat = true;
+            last_repeat = timer_read();
+        }
+    }
 }

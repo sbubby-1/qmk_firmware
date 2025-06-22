@@ -66,10 +66,7 @@ void tap_custom_key(void) {
     }
 }
 
-bool set_repeat_custom_key(uint16_t keycode, keyrecord_t *record) {
-    // if (keycode != LEFT_WORD && keycode != RIGHT_WORD && keycode != DELETE_LINE) return true;
-    if (!is_repeatable_key(keycode)) return true;
-
+void set_repeat_custom_key(uint16_t keycode, keyrecord_t *record) {
     held_custom_key = keycode;
 
     if (record->event.pressed) {
@@ -82,8 +79,6 @@ bool set_repeat_custom_key(uint16_t keycode, keyrecord_t *record) {
 
         did_custom_key_repeat = false;
     }
-
-    return false;
 }
 
 void try_repeat_custom_key(void) {
@@ -98,4 +93,54 @@ void try_repeat_custom_key(void) {
             last_repeat           = timer_read();
         }
     }
+}
+
+bool handle_nonrepeatable_key(uint16_t keycode) {
+    switch (keycode) {
+        case KC_ESC:
+            if (get_oneshot_mods()) {
+                clear_oneshot_mods();
+                return false;
+            }
+            return true;
+
+        case XC_LFT_SPLT:
+            tap_code16(LGUI(KC_J));
+            wait_ms(4);
+            tap_code(KC_LEFT);
+            wait_ms(4);
+            tap_code(KC_ENT);
+            return false;
+
+        case XC_RGT_SPLT:
+            tap_code16(LGUI(KC_J));
+            wait_ms(4);
+            tap_code(KC_RGHT);
+            wait_ms(4);
+            tap_code(KC_ENT);
+            return false;
+
+        case DBL_QUOT:
+            SEND_STRING("\"\"");
+            tap_code(KC_LEFT);
+            return false;
+
+        case VIWPYIW:
+            SEND_STRING("viwpyiw");
+            return false;
+
+        case KC_LPRN:
+        case KC_LBRC:
+        case KC_LCBR:
+        case KC_LABK:
+        case KC_QUOT:
+        case KC_DQUO:
+        case KC_GRV:
+            handle_opening_pair(keycode);
+            return false;
+
+        case CLOSE_PAIR:
+            return handle_closing_pair();
+    }
+    return true;
 }

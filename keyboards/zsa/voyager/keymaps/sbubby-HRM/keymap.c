@@ -60,49 +60,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
     }
 
-    if (!set_repeat_custom_key(keycode, record)) return false;
+    if (is_repeatable_key(keycode)) {
+        set_repeat_custom_key(keycode, record);
+        return false;
+    }
 
     if (record->event.pressed) {
-        switch (keycode) {
-            case KC_ESC:
-                if (get_oneshot_mods()) {
-                    clear_oneshot_mods();
-                    return false;
-                }
-                return true;
-
-            case XC_LFT_SPLT:
-                tap_code16(LGUI(KC_J));
-                wait_ms(4);
-                tap_code(KC_LEFT);
-                wait_ms(4);
-                tap_code(KC_ENT);
-                return false;
-
-            case XC_RGT_SPLT:
-                tap_code16(LGUI(KC_J));
-                wait_ms(4);
-                tap_code(KC_RGHT);
-                wait_ms(4);
-                tap_code(KC_ENT);
-                return false;
-
-            case DBL_QUOT:
-                SEND_STRING("\"\"");
-                tap_code(KC_LEFT);
-                return false;
-
-            case VIWPYIW:
-                SEND_STRING("viwpyiw");
-                return false;
-
-            case KC_LPRN: case KC_LBRC: case KC_LCBR: case KC_LABK: case KC_QUOT: case KC_DQUO: case KC_GRV:
-                handle_opening_pair(keycode);
-                return false;
-
-            case CLOSE_PAIR:
-                return handle_closing_pair();
-        }
+        if(!handle_nonrepeatable_key(keycode)) return false;
     }
     return true;
 }

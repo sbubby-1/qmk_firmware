@@ -33,18 +33,14 @@ enum custom_keycodes {
 #define SCRNSHOT LGUI(LCTL(LSFT(KC_4)))
 #define BACK G(KC_LEFT)
 #define FORWARD G(KC_RIGHT)
-#define ARC_SPLIT_CLOSE HYPR(KC_N)
 #define CLOSE_WIN G(KC_W)
 #define XCODE_SPLIT HYPR(KC_U)
-#define ARC_SPLIT HYPR(KC_H)
-#define ARC_LFT_SPLT C(S(KC_P))
 #define HMRW_SCROLL HYPR(KC_J)
 #define HMRW_CLICK HYPR(KC_K)
-#define ARC_RGHT_SPLT C(S(KC_E))
 #define XC_CONSOLE LSG(KC_Y) 
 #define XC_PREVIEW LAG(KC_ENT)
-#define ARC_WS_1 C(KC_1)
-#define ARC_WS_2 C(KC_2)
+#define WS_1 C(KC_1)
+#define WS_2 C(KC_2)
 #define TAB_L LSG(KC_LBRC)
 #define TAB_R LSG(KC_RBRC)
 #define XC_SEARCH LSG(KC_O)
@@ -78,9 +74,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
     [NAV] = LAYOUT(
         _______, _______, _______, _______, _______, _______,                      _______, _______, _______, _______, _______, _______,
-        BACK,    FORWARD, XC_LFT_SPLT, KC_UP, XC_RGT_SPLT, KC_HOME,                OSM(MOD_LALT), LEFT_WORD, DELETE_LINE, RIGHT_WORD,  XCODE_SPLIT, ARC_SPLIT,
-        ARC_SPLIT_CLOSE,CLOSE_WIN, KC_LEFT, KC_DOWN, KC_RGHT, KC_END,              ARC_LFT_SPLT, HMRW_SCROLL, HMRW_CLICK, ARC_RGHT_SPLT, XC_CONSOLE, XC_PREVIEW,
-        _______, ZOOM_OUT, ARC_WS_1, ARC_WS_2, TAB_L, TAB_R,                       _______, XC_SIDEBAR, XC_SEARCH, XC_SHOW, ZOOM_IN, _______,
+        BACK,    FORWARD, XC_LFT_SPLT, KC_UP, XC_RGT_SPLT, KC_HOME,                OSM(MOD_LALT), LEFT_WORD, DELETE_LINE, RIGHT_WORD,  XCODE_SPLIT, _______,
+        _______, CLOSE_WIN, KC_LEFT, KC_DOWN, KC_RGHT, KC_END,                     _______, HMRW_SCROLL, HMRW_CLICK, _______, XC_CONSOLE, XC_PREVIEW,
+        _______, ZOOM_OUT,WS_1,    WS_2, TAB_L, TAB_R,                             _______, XC_SIDEBAR, XC_SEARCH, XC_SHOW, ZOOM_IN, _______,
                                                      _______, _______,    _______, _______
     ),
     [NUM] = LAYOUT(

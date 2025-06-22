@@ -21,19 +21,7 @@
  */
 
 #include "achordion.h"
-
-// Left-hand home row mods
-#define HOME_N LCTL_T(KC_N)
-#define HOME_R LGUI_T(KC_R)
-#define HOME_T LSFT_T(KC_T)
-#define HOME_S LALT_T(KC_S)
-
-// Right-hand home row mods
-#define HOME_H RALT_T(KC_H)
-#define HOME_A RSFT_T(KC_A)
-#define HOME_E LGUI_T(KC_E)
-#define HOME_I RCTL_T(KC_I)
-#define HYPR_SPC MT(MOD_LCTL | MOD_LSFT | MOD_LALT | MOD_LGUI, KC_SPC)
+#include "../custom_keys.h"
 
 #if !defined(IS_QK_MOD_TAP)
 // Attempt to detect out-of-date QMK installation, which would fail with

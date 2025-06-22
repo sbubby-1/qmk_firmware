@@ -4,67 +4,14 @@
 
 #include QMK_KEYBOARD_H
 #include "features/achordion.h"
-#include "timer.h"
+#include "custom_keys.h"
+#include "features/custom_key_functions.h"
 
 enum layers { BASE, SYM, NAV, NUM, MOUSE };
-
-enum custom_keycodes {
-    XC_LFT_SPLT = SAFE_RANGE,
-    XC_RGT_SPLT,
-    DBL_QUOT,
-    VIWPYIW,
-    DELETE_LINE,
-    LEFT_WORD,
-    RIGHT_WORD,
-    CLOSE_PAIR
-};
-
-#define CUSTOM_KEY_DELAY 200
-#define CUSTOM_KEY_INTERVAL 50
-
-// Left-hand home row mods
-#define HOME_N LCTL_T(KC_N)
-#define HOME_R LGUI_T(KC_R)
-#define HOME_T LSFT_T(KC_T)
-#define HOME_S LALT_T(KC_S)
-
-// Right-hand home row mods
-#define HOME_H RALT_T(KC_H)
-#define HOME_A RSFT_T(KC_A)
-#define HOME_E LGUI_T(KC_E)
-#define HOME_I RCTL_T(KC_I)
-
-#define SCRNSHOT LGUI(LCTL(LSFT(KC_4)))
-#define BACK G(KC_LEFT)
-#define FORWARD G(KC_RIGHT)
-#define CLOSE_WIN G(KC_W)
-#define XCODE_SPLIT HYPR(KC_U)
-#define HMRW_SCROLL HYPR(KC_J)
-#define HMRW_CLICK HYPR(KC_K)
-#define XC_CONSOLE LSG(KC_Y) 
-#define XC_PREVIEW LAG(KC_ENT)
-#define WS_1 C(KC_1)
-#define WS_2 C(KC_2)
-#define TAB_L LSG(KC_LBRC)
-#define TAB_R LSG(KC_RBRC)
-#define XC_SEARCH LSG(KC_O)
-#define XC_SHOW LSG(KC_J)
-#define XC_SIDEBAR G(KC_0)
-#define ZOOM_IN G(KC_PLUS)
-#define ZOOM_OUT G(KC_MINS)
-
-#define HYPR_SPC MT(MOD_LCTL | MOD_LSFT | MOD_LALT | MOD_LGUI,KC_SPC)
-
-bool is_custom_key_held = false;
-bool did_custom_key_repeat = false;
-uint16_t held_custom_key = 0;
-uint16_t custom_key_held_timer = 0;
 
 layer_state_t layer_state_set_user(layer_state_t state) {
     return update_tri_layer_state(state, SYM, NAV, NUM);
 }
-
-static uint16_t last_keycode = KC_NO;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT(
@@ -107,68 +54,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 void housekeeping_task_user(void) {
     achordion_task();
 }
-
-void handle_opening_pair(uint16_t keycode) {
-    last_keycode = keycode;
-    tap_code16(keycode);
-}
-
-bool handle_closing_pair(void) {
-    switch (last_keycode) {
-        case KC_LPRN: tap_code16(KC_RPRN); break;  // (
-        case KC_LBRC: tap_code16(KC_RBRC); break;  // [
-        case KC_LCBR: tap_code16(KC_RCBR); break;  // {
-        case KC_LABK: tap_code16(KC_RABK); break;  // <
-        case KC_QUOT: tap_code16(KC_QUOT); break;  // '
-        case KC_DQUO: tap_code16(KC_DQUO); break;  // "
-        case KC_GRV:  tap_code16(KC_GRV);  break;  // `
-        default: return false;
-    }
-    tap_code(KC_LEFT);
-    last_keycode = KC_NO;
-    return true;
-}
-
-void tap_custom_key(void) {
-    switch (held_custom_key) {
-        case LEFT_WORD:
-            register_mods(MOD_BIT(KC_LSFT) | MOD_BIT(KC_LALT));
-            tap_code(KC_LEFT);
-            unregister_mods(MOD_BIT(KC_LSFT) | MOD_BIT(KC_LALT));
-            break;
-
-        case RIGHT_WORD:
-            register_mods(MOD_BIT(KC_LSFT) | MOD_BIT(KC_LALT));
-            tap_code(KC_RGHT);
-            unregister_mods(MOD_BIT(KC_LSFT) | MOD_BIT(KC_LALT));
-            break;
-
-        case DELETE_LINE:
-            SEND_STRING(SS_LGUI(SS_TAP(X_RGHT)));
-            SEND_STRING(SS_LGUI(SS_TAP(X_BSPC)));
-            break;
-    }
-}
-
-bool set_repeat_custom_key(uint16_t keycode, keyrecord_t *record) {
-    if (keycode != LEFT_WORD && keycode != RIGHT_WORD && keycode != DELETE_LINE) return true;
-
-    held_custom_key = keycode;
-
-    if (record->event.pressed) {
-        is_custom_key_held = true;
-        custom_key_held_timer = timer_read();
-    } else {
-        is_custom_key_held = false;
-
-        if (!did_custom_key_repeat) tap_custom_key();
-
-        did_custom_key_repeat = false;
-    }
-
-    return false;
-}
-
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (!process_achordion(keycode, record)) {
@@ -238,15 +123,5 @@ uint16_t get_quick_tap_term(uint16_t keycode, keyrecord_t* record) {
 }
 
 void matrix_scan_user(void) {
-    static uint16_t last_repeat = 0;
-
-    if (is_custom_key_held) {
-        uint16_t elapsed = timer_elapsed(custom_key_held_timer);
-
-        if (elapsed > CUSTOM_KEY_DELAY && timer_elapsed(last_repeat) > CUSTOM_KEY_INTERVAL) {
-            tap_custom_key();
-            did_custom_key_repeat = true;
-            last_repeat = timer_read();
-        }
-    }
+    try_repeat_custom_key();
 }

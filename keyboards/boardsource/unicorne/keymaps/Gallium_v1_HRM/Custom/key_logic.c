@@ -63,8 +63,8 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         } else {
             if (!has_sent_repeatable_custom_key) {
                 send_held_repeatable_custom_key();
-                cancel_repeat_custom_key();
             }
+            cancel_repeat_custom_key();
         }
         return false;
     }

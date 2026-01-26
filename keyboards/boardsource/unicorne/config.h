@@ -20,9 +20,9 @@
 #define MK_KINETIC_SPEED
 #define MOUSEKEY_DELAY 0
 #define MOUSEKEY_INTERVAL 6
-#define MOUSEKEY_INITIAL_SPEED 12
-#define MOUSEKEY_MAX_SPEED 5
-#define MOUSEKEY_MOVE_DELTA 4
+#define MOUSEKEY_INITIAL_SPEED 100
+#define MOUSEKEY_BASE_SPEED 3200
+#define MOUSEKEY_MOVE_DELTA 24
 
 #define TAPPING_TERM 170
 // Default: Tapping term must pass for the mod-tap to become a mod.

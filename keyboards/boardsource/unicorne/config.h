@@ -20,11 +20,11 @@
 #define MK_KINETIC_SPEED
 #define MOUSEKEY_DELAY 0
 #define MOUSEKEY_INTERVAL 6
-#define MOUSEKEY_INITIAL_SPEED 140
+#define MOUSEKEY_INITIAL_SPEED 240
 #define MOUSEKEY_BASE_SPEED 3200
 #define MOUSEKEY_MOVE_DELTA 24
 
-#define TAPPING_TERM 170
+#define TAPPING_TERM 230
 // Default: Tapping term must pass for the mod-tap to become a mod.
 // Permissive hold: If another key is pressed and released during the tapping term, the mod is used.
 // Hold on other key press: If another key is pressed during the tapping term, the mod is used.

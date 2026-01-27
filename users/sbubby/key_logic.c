@@ -51,7 +51,7 @@ static bool handle_closing_pair(void);
 
 // MARK: QMK overrides
 
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+__attribute__((weak)) bool process_record_user_weak(uint16_t keycode, keyrecord_t *record) {
     if (is_repeatable_key(keycode)) {
         if (keycode != current_repeatable_custom_keycode) {
             cancel_repeat_custom_key();
@@ -79,7 +79,11 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
-bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t *tap_hold_record, uint16_t other_keycode, keyrecord_t *other_record) {
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    return process_record_user_weak(keycode, record);
+}
+
+__attribute__((weak)) bool get_chordal_hold_weak(uint16_t tap_hold_keycode, keyrecord_t *tap_hold_record, uint16_t other_keycode, keyrecord_t *other_record) {
     switch (tap_hold_keycode) {
         case LCTL_N:
             if (other_keycode == KC_D) {
@@ -99,6 +103,10 @@ bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t *tap_hold_record, u
             break;
     }
     return get_chordal_hold_default(tap_hold_record, other_record);
+}
+
+bool get_chordal_hold(uint16_t tap_hold_keycode, keyrecord_t *tap_hold_record, uint16_t other_keycode, keyrecord_t *other_record) {
+    return get_chordal_hold_weak(tap_hold_keycode, tap_hold_record, other_keycode, other_record);
 }
 
 // MARK: Helper functions

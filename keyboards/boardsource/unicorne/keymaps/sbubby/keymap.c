@@ -1,11 +1,6 @@
 #include QMK_KEYBOARD_H
-#include "Custom/keys.h"
-
-enum layers { BASE, SYM, NAV, NUM, MOUSE };
-
-layer_state_t layer_state_set_user(layer_state_t state) {
-    return update_tri_layer_state(state, SYM, NAV, NUM);
-}
+#include "keys.h"
+#include "layers.h"
 
 // clang-format off
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {

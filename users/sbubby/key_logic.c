@@ -165,6 +165,21 @@ static bool handle_nonrepeatable_custom_key(uint16_t keycode) {
 
         case CLOSE_PAIR:
             return handle_closing_pair();
+
+        case COPY_ALL:
+            tap_code16(LGUI(KC_A));
+            tap_code16(LGUI(KC_C));
+            return false;
+
+        case SLACK:
+            tap_code16(LALT(KC_S));
+            tap_code16_delay(LGUI(KC_K), 100);
+            return false;
+
+        case FINDER:
+            tap_code16(HYPR(KC_G));
+            tap_code16_delay(LSG(KC_E), 400);
+            return false;
     }
     return true;
 }

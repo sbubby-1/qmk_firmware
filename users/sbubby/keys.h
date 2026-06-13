@@ -33,16 +33,17 @@
 #define HMRW_CLICK HYPR(KC_A)
 #define HMRW_SCROLL HYPR(KC_H)
 #define SCRNSHOT LCSG(KC_4)
+#define SCRNSHOT_S LSG(KC_4)
 
 // Sym layer
 
 #define XC_CONSOLE LSG(KC_Y)
-#define XC_FORMAT LAG(KC_S)
 #define XC_LINE_NUM LCAG(KC_C)
 #define XC_PREVIEW LAG(KC_ENT)
 #define XC_SEARCH LSG(KC_O)
 #define XC_SHOW LSG(KC_J)
 #define XC_SIDEBAR G(KC_0)
+#define DEL_WORD G(KC_BSPC)
 
 enum custom_keycodes {
     DBL_QUOT = SAFE_RANGE,
@@ -50,5 +51,8 @@ enum custom_keycodes {
     CLOSE_PAIR,
     DEL_LINE,
     SLW,
-    SRW
+    SRW,
+    COPY_ALL,
+    SLACK,
+    FINDER
 };

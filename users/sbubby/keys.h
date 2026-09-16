@@ -13,6 +13,11 @@
 #define RGUI_E RGUI_T(KC_E)
 #define RCTL_I RCTL_T(KC_I)
 
+#define CLIPB G(KC_SPC)
+#define SNIPPET HYPR(KC_V)
+
+#define LOCK LCG(KC_Q)
+
 #define MOUSE_ESC LT(MOUSE, KC_ESC)
 
 #define HYPR_SPC MT(MOD_LCTL | MOD_LSFT | MOD_LALT | MOD_LGUI, KC_SPC)
@@ -45,13 +50,4 @@
 #define XC_SIDEBAR G(KC_0)
 #define DEL_WORD A(KC_BSPC)
 
-enum custom_keycodes {
-    DBL_QUOT = SAFE_RANGE,
-    VIWPYIW,
-    CLOSE_PAIR,
-    DEL_LINE,
-    SLW,
-    SRW,
-    XC_MARK,
-    XC_JUMP_MARK
-};
+enum custom_keycodes { DBL_QUOT = SAFE_RANGE, VIWPYIW, CLOSE_PAIR, DEL_LINE, SLW, SRW, XC_MARK, XC_JUMP_MARK };

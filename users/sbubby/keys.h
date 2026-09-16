@@ -43,7 +43,7 @@
 #define XC_SEARCH LSG(KC_O)
 #define XC_SHOW LSG(KC_J)
 #define XC_SIDEBAR G(KC_0)
-#define DEL_WORD G(KC_BSPC)
+#define DEL_WORD A(KC_BSPC)
 
 enum custom_keycodes {
     DBL_QUOT = SAFE_RANGE,
@@ -52,7 +52,6 @@ enum custom_keycodes {
     DEL_LINE,
     SLW,
     SRW,
-    COPY_ALL,
-    SLACK,
-    FINDER
+    XC_MARK,
+    XC_JUMP_MARK
 };

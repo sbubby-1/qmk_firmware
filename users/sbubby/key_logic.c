@@ -90,17 +90,6 @@ __attribute__((weak)) bool get_chordal_hold_weak(uint16_t tap_hold_keycode, keyr
                 return true;
             }
             break;
-
-        case RALT_H:
-            switch (other_keycode) {
-                case KC_J:
-                case KC_Y:
-                case KC_O:
-                case KC_U:
-                case KC_COMM:
-                    return true;
-            }
-            break;
     }
     return get_chordal_hold_default(tap_hold_record, other_record);
 }
@@ -166,19 +155,20 @@ static bool handle_nonrepeatable_custom_key(uint16_t keycode) {
         case CLOSE_PAIR:
             return handle_closing_pair();
 
-        case COPY_ALL:
-            tap_code16(LGUI(KC_A));
-            tap_code16(LGUI(KC_C));
+        case XC_MARK:
+            tap_code16(KC_A);
+            tap_code16(LCTL(KC_N));
+            tap_code16(KC_ESC);
             return false;
 
-        case SLACK:
-            tap_code16(LALT(KC_S));
-            tap_code16_delay(LGUI(KC_K), 100);
+        case XC_JUMP_MARK:
+            tap_code16(KC_A);
+            tap_code16(LCTL(KC_M));
+            tap_code16(KC_ESC);
+            tap_code16(KC_Z);
+            tap_code16(KC_Z);
             return false;
 
-        case FINDER:
-            tap_code16(HYPR(KC_G));
-            tap_code16_delay(LSG(KC_E), 400);
             return false;
     }
     return true;

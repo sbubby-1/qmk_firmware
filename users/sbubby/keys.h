@@ -17,6 +17,9 @@
 #define SNIPPET HYPR(KC_V)
 
 #define LOCK LCG(KC_Q)
+#define RECORD LSG(KC_5)
+#define SLCT_ALL G(KC_A)
+#define OPEN_LINK HYPR(KC_3)
 
 #define MOUSE_ESC LT(MOUSE, KC_ESC)
 
@@ -50,4 +53,4 @@
 #define XC_SIDEBAR G(KC_0)
 #define DEL_WORD A(KC_BSPC)
 
-enum custom_keycodes { DBL_QUOT = SAFE_RANGE, VIWPYIW, CLOSE_PAIR, DEL_LINE, SLW, SRW, XC_MARK, XC_JUMP_MARK };
+enum custom_keycodes { DBL_QUOT = SAFE_RANGE, SNGL_QUOT, VIWPYIW, CLOSE_PAIR, DEL_LINE, SLW, SRW, XC_MARK, XC_JUMP_MARK };

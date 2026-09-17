@@ -147,6 +147,11 @@ static bool handle_nonrepeatable_custom_key(uint16_t keycode) {
             SEND_STRING("\"\"");
             tap_code(KC_LEFT);
             return false;
+            
+        case SNGL_QUOT:
+            SEND_STRING("\'\'");
+            tap_code(KC_LEFT);
+            return false;
 
         case VIWPYIW:
             SEND_STRING("viwpyiw");

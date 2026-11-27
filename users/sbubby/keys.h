@@ -19,7 +19,8 @@
 #define LOCK LCG(KC_Q)
 #define RECORD LSG(KC_5)
 #define SLCT_ALL G(KC_A)
-#define OPEN_LINK HYPR(KC_3)
+#define OPEN_LINK HYPR(KC_S)
+#define MUTE HYPR(KC_3)
 
 #define MOUSE_ESC LT(MOUSE, KC_ESC)
 

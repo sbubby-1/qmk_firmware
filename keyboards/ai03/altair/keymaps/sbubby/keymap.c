@@ -5,9 +5,9 @@
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     [BASE] = LAYOUT(
-      MOUSE_ESC, _______, _______,OPEN_LINK,SLCT_ALL,RECORD,  SCRNSHOT_S,        KC_MUTE, KC_VOLD, KC_VOLU, _______, _______, LOCK,    KC_TAB,
+      MOUSE_ESC, _______,SLCT_ALL, PASTE,   COPY,  OPEN_LINK, SCRNSHOT_S,        KC_MUTE, KC_VOLD, KC_VOLU, MUTE,    _______, LOCK,    KC_TAB,
       MOUSE_ESC, KC_B,    KC_L,    KC_D,    KC_C,    KC_V,    SCRNSHOT,          _______, KC_J,    KC_Y,    KC_O,    KC_U,    KC_COMM, KC_TAB,
-        OS_HYPR, LCTL_N,  LGUI_R,  KC_T,    LALT_S,  KC_G,    _______,           _______, KC_P,    RALT_H,  KC_A,    RGUI_E,  RCTL_I,  KC_ENT,
+        OS_HYPR, LCTL_N,  LGUI_R,  KC_T,    LALT_S,  KC_G,    RECORD,            _______, KC_P,    RALT_H,  KC_A,    RGUI_E,  RCTL_I,  KC_ENT,
         OS_LSFT, KC_X,    KC_Q,    KC_M,    KC_W,    KC_Z,    SNGL_QUOT,         _______, KC_K,    KC_F,    KC_QUOT, KC_SCLN, KC_DOT, KC_SLSH,
                                    SNIPPET, OS_LGUI, MO(NAV), KC_SPC,            KC_BSPC, MO(SYM), OS_LALT, CLIPB
     ),
